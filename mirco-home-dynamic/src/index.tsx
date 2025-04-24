@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+
 import RoutesProvider from "@/config/routes";
 import {ConfigProvider} from 'antd';
 import reportWebVitals from './reportWebVitals';

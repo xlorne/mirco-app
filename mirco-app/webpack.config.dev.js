@@ -17,14 +17,16 @@ module.exports = merge(common,{
                 "./Header": "./src/pages/header",
             },
             shared: {
-                ...dependencies,
+                // ...dependencies,
                 react: {
                     singleton: true,
                     requiredVersion: dependencies["react"],
+                    eager: true,
                 },
                 "react-dom": {
                     singleton: true,
                     requiredVersion: dependencies["react-dom"],
+                    eager: true,
                 },
             },
         }),
