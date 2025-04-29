@@ -49,8 +49,8 @@ const HomePage = () => {
         >
             Home Dynamic Remote Component Page
             <Space>
-                <Button onClick={handlerGoLocal}>go local page</Button>
                 <Button onClick={handlerAddLocalPage}>add local page </Button>
+                <Button onClick={handlerGoLocal}>go local page</Button>
                 <Button onClick={handlerRemoveLocal}>remove local page</Button>
             </Space>
             <Space>

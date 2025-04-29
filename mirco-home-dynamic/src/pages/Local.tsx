@@ -47,6 +47,10 @@ const LocalPage = () => {
             )}
             <Button
                 onClick={() => {
+                    form.setFieldsValue({
+                        scope:"MircoApp",
+                        module:"./Header"
+                    });
                     setVisible(true);
                 }}
             >upload zip component</Button>
