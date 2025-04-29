@@ -26,8 +26,15 @@ const RemotePage = () => {
 
                 if(type ==='vue2'){
                     const Component = Object.values(ComponentModule)[0] as any;
-                    Component(containerRef.current,{title:"asd",onClick:()=>{
-                        alert('xxx')
+                    Component(containerRef.current,{title:"vue2",onClick:()=>{
+                        alert('vue2 click')
+                    }});
+                }
+
+                if(type ==='vue3'){
+                    const Component = Object.values(ComponentModule)[0] as any;
+                    Component(containerRef.current,{title:"vue3",onClick:()=>{
+                        alert('vue3 click')
                     }});
                 }
             });
@@ -90,6 +97,10 @@ const RemotePage = () => {
                         {
                             label:'vue2',
                             value:'vue2'
+                        },
+                        {
+                            label:'vue3',
+                            value:'vue3'
                         }
                     ]}
                     rules={[
