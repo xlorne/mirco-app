@@ -23,7 +23,7 @@ module.exports = merge(common, {
                 vue: {
                     singleton: true,
                     eager: true,
-                    requiredVersion: "^2.6.0",
+                    requiredVersion: "^3.4.0",
                 },
             },
         }),
