@@ -8,8 +8,6 @@ export function Header(el: HTMLElement, props: Record<string, any>) {
 
     return () => {
         vm.$destroy();
-        if (el) {
-            el.innerHTML = '';
-        }
+        el.innerHTML = '';
     };
 }

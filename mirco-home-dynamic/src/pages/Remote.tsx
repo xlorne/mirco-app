@@ -1,4 +1,4 @@
-import React, {Suspense, useState} from 'react';
+import React, {Suspense, useEffect, useRef, useState} from 'react';
 import {Button} from "antd";
 import {loadRemoteComponent, loadRemoteScript} from '@/utils/dynamicLoader';
 import {ModalForm, ProForm, ProFormSelect, ProFormText} from "@ant-design/pro-components";
@@ -6,7 +6,10 @@ import {HeaderProps} from "@/gateway";
 
 const RemotePage = () => {
 
-    const [RemoteHeaderComponent, setRemoteHeaderComponent] = useState<(React.ComponentType<HeaderProps>) | null>(null);
+    const [RemoteReactComponent, setRemoteReactComponent] = useState<(React.ComponentType<HeaderProps>) | null>(null);
+
+
+    const unmountFn = useRef<(() => void) | null>(null);
 
     const [visible, setVisible] = useState(false);
 
@@ -19,36 +22,55 @@ const RemotePage = () => {
         loadRemoteScript(remoteUrl).then(() => {
             loadRemoteComponent(scope, module).then((ComponentModule: any) => {
                 console.log('ComponentModule', ComponentModule);
-
+                unmountFn.current?.();
+                if (containerRef.current) {
+                    containerRef.current.innerHTML = ''; // 清理 Vue 上次挂载的 DOM
+                }
                 if (type === 'react') {
                     const Component = ComponentModule.default || ComponentModule;
-                    setRemoteHeaderComponent(()=>Component);
+                    setRemoteReactComponent(()=>Component);
                 }
 
                 if (type === 'vue2') {
-                    const Component = Object.values(ComponentModule)[0] as any;
-                    Component(containerRef.current, {
+                    const mountFn = Object.values(ComponentModule)[0] as any;
+                    const destroyFn = mountFn(containerRef.current, {
                         title: "vue2 Header",
                         onClick: () => {
                             alert('vue2 click')
                         }
                     });
+                    console.log('destroyFn:',destroyFn)
+                    unmountFn.current = typeof destroyFn === 'function' ? destroyFn : null;
+                    setRemoteReactComponent(null);
                 }
 
                 if (type === 'vue3') {
-                    const Component = Object.values(ComponentModule)[0] as any;
-                    Component(containerRef.current, {
+                    const mountFn = Object.values(ComponentModule)[0] as any;
+                    const destroyFn = mountFn(containerRef.current, {
                         title: "vue3 Header",
                         onClick: () => {
                             alert('vue3 click')
                         }
                     });
+                    console.log('destroyFn:',destroyFn)
+                    unmountFn.current = typeof destroyFn === 'function' ? destroyFn : null;
+                    setRemoteReactComponent(null);
                 }
             });
         }).catch(ignore => {
         });
         setVisible(false);
     }
+
+    useEffect(() => {
+        return () => {
+            unmountFn.current?.();
+            setRemoteReactComponent(null);
+            if (containerRef.current) {
+                containerRef.current.innerHTML = '';
+            }
+        };
+    }, []);
 
     return (
         <div
@@ -61,9 +83,9 @@ const RemotePage = () => {
                 gap: '50px',
             }}
         >
-            {RemoteHeaderComponent && (
+            {RemoteReactComponent && (
                 <Suspense fallback={<div>Loading Header...</div>}>
-                    <RemoteHeaderComponent
+                    <RemoteReactComponent
                         title={"React Header"}
                         onClick={() => {
                             alert('react click');
@@ -72,7 +94,7 @@ const RemotePage = () => {
                 </Suspense>
             )}
 
-            <div ref={containerRef}></div>
+            {!RemoteReactComponent && <div ref={containerRef}></div>}
 
             <Button
                 onClick={() => {
