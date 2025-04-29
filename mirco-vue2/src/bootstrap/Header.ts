@@ -2,12 +2,17 @@ import Vue from 'vue';
 import HeaderVue from '../views/Header.vue';
 
 export function Header(el: HTMLElement, props: Record<string, any>) {
+    const mountEl = document.createElement('div');
+    el.appendChild(mountEl);
+
     const vm = new Vue({
         render: (h) => h(HeaderVue, {props}),
-    }).$mount(el);
+    }).$mount(mountEl);
 
     return () => {
         vm.$destroy();
-        el.innerHTML = '';
+        if (mountEl.parentNode) {
+            mountEl.parentNode.removeChild(mountEl);
+        }
     };
 }

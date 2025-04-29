@@ -1,5 +1,5 @@
-import React, {Suspense, useEffect, useRef, useState} from 'react';
-import {Button} from "antd";
+import React, {Suspense, useRef, useState} from 'react';
+import {Button, Space} from "antd";
 import {loadRemoteComponent, loadRemoteScript} from '@/utils/dynamicLoader';
 import {ModalForm, ProForm, ProFormSelect, ProFormText} from "@ant-design/pro-components";
 import {HeaderProps} from "@/gateway";
@@ -7,7 +7,6 @@ import {HeaderProps} from "@/gateway";
 const RemotePage = () => {
 
     const [RemoteReactComponent, setRemoteReactComponent] = useState<(React.ComponentType<HeaderProps>) | null>(null);
-
 
     const unmountFn = useRef<(() => void) | null>(null);
 
@@ -17,18 +16,24 @@ const RemotePage = () => {
 
     const containerRef = React.useRef<HTMLDivElement>(null);
 
+    const destroyRemoteComponent = () => {
+        if(containerRef.current){
+            containerRef.current.innerHTML = '';
+        }
+        unmountFn.current?.();
+        setRemoteReactComponent(null);
+    }
+
     const handlerLoadComponent = async (values: any) => {
         const {remoteUrl, scope, module, type} = values;
         loadRemoteScript(remoteUrl).then(() => {
             loadRemoteComponent(scope, module).then((ComponentModule: any) => {
+                destroyRemoteComponent();
+
                 console.log('ComponentModule', ComponentModule);
-                unmountFn.current?.();
-                if (containerRef.current) {
-                    containerRef.current.innerHTML = ''; // 清理 Vue 上次挂载的 DOM
-                }
                 if (type === 'react') {
                     const Component = ComponentModule.default || ComponentModule;
-                    setRemoteReactComponent(()=>Component);
+                    setRemoteReactComponent(() => Component);
                 }
 
                 if (type === 'vue2') {
@@ -39,8 +44,8 @@ const RemotePage = () => {
                             alert('vue2 click')
                         }
                     });
-                    console.log('destroyFn:',destroyFn)
                     unmountFn.current = typeof destroyFn === 'function' ? destroyFn : null;
+                    console.log('destroyFn:', unmountFn.current)
                     setRemoteReactComponent(null);
                 }
 
@@ -52,8 +57,8 @@ const RemotePage = () => {
                             alert('vue3 click')
                         }
                     });
-                    console.log('destroyFn:',destroyFn)
                     unmountFn.current = typeof destroyFn === 'function' ? destroyFn : null;
+                    console.log('destroyFn:', unmountFn.current)
                     setRemoteReactComponent(null);
                 }
             });
@@ -61,16 +66,6 @@ const RemotePage = () => {
         });
         setVisible(false);
     }
-
-    useEffect(() => {
-        return () => {
-            unmountFn.current?.();
-            setRemoteReactComponent(null);
-            if (containerRef.current) {
-                containerRef.current.innerHTML = '';
-            }
-        };
-    }, []);
 
     return (
         <div
@@ -94,19 +89,27 @@ const RemotePage = () => {
                 </Suspense>
             )}
 
-            {!RemoteReactComponent && <div ref={containerRef}></div>}
+            <div ref={containerRef}></div>
 
-            <Button
-                onClick={() => {
-                    form.setFieldsValue({
-                        remoteUrl: "http://localhost:3000/remoteEntry.js",
-                        scope: "MircoApp",
-                        module: "./Header",
-                        type: 'react'
-                    })
-                    setVisible(true);
-                }}
-            >load remote component</Button>
+            <Space>
+                <Button
+                    onClick={() => {
+                        form.setFieldsValue({
+                            remoteUrl: "http://localhost:3000/remoteEntry.js",
+                            scope: "MircoApp",
+                            module: "./Header",
+                            type: 'react'
+                        })
+                        setVisible(true);
+                    }}
+                >load remote component</Button>
+                <Button
+                    onClick={() => {
+                        destroyRemoteComponent();
+                    }}>
+                    remove remote component
+                </Button>
+            </Space>
 
             <ModalForm
                 title={"load remote component"}
