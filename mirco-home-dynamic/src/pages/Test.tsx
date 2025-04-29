@@ -1,7 +1,7 @@
 import React, {Suspense, useState} from 'react';
 import {Button} from "antd";
 import {loadRemoteComponent, loadRemoteScript} from '@/utils/dynamicLoader';
-import {ModalForm, ProForm, ProFormText} from "@ant-design/pro-components";
+import {ModalForm, ProForm, ProFormSelect, ProFormText} from "@ant-design/pro-components";
 
 const Test = () => {
 
@@ -11,12 +11,25 @@ const Test = () => {
 
     const [form] = ProForm.useForm();
 
+    const contanierRef = React.useRef<HTMLDivElement>(null);
+
     const handlerLoadComponent = async (values: any) => {
-        const {remoteUrl, scope, module} = values;
+        const {remoteUrl, scope, module,type} = values;
         loadRemoteScript(remoteUrl).then(() => {
             loadRemoteComponent(scope, module).then((ComponentModule: any) => {
-                const Component = ComponentModule.default || ComponentModule;
-                setRemoteTestComponent(() => Component);
+                console.log('ComponentModule',ComponentModule);
+
+                if(type ==='react'){
+                    const Component = ComponentModule.default || ComponentModule;
+                    setRemoteTestComponent(Component);
+                }
+
+                if(type ==='vue2'){
+                    const Component = Object.values(ComponentModule)[0] as any;
+                    Component(contanierRef.current,{title:"asd",onClick:()=>{
+                        alert('xxx')
+                    }});
+                }
             });
         }).catch(ignore => {});
         setVisible(false);
@@ -39,12 +52,15 @@ const Test = () => {
                 </Suspense>
             )}
 
+            <div ref={contanierRef}></div>
+
             <Button
                 onClick={() => {
                     form.setFieldsValue({
                         remoteUrl: "http://localhost:3000/remoteEntry.js",
                         scope: "MircoApp",
-                        module: "./Header"
+                        module: "./Header",
+                        type:'react'
                     })
                     setVisible(true);
                 }}
@@ -62,6 +78,27 @@ const Test = () => {
                 }}
                 onFinish={handlerLoadComponent}
             >
+
+                <ProFormSelect
+                    label={"type"}
+                    name={"type"}
+                    options={[
+                        {
+                            label:'react',
+                            value:'react'
+                        },
+                        {
+                            label:'vue2',
+                            value:'vue2'
+                        }
+                    ]}
+                    rules={[
+                        {
+                            required: true,
+                            message: "type is required"
+                        }
+                    ]}
+                />
 
 
                 <ProFormText
