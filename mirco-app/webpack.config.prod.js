@@ -7,7 +7,7 @@ module.exports = merge(common,{
     mode: 'development',
     entry: './src/entry.tsx',
     devServer: {
-        port: 13000,
+        port: 3000,
     },
     plugins: [
         new ModuleFederationPlugin({

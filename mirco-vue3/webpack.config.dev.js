@@ -6,7 +6,7 @@ module.exports = merge(common, {
     mode: 'development',
     devtool: 'inline-source-map',
     devServer: {
-        port: 4000,
+        port: 9000,
         hot: true,
         headers: {
             "Access-Control-Allow-Origin": "*", // ⚠️ 允许主应用跨域加载
@@ -28,4 +28,4 @@ module.exports = merge(common, {
             },
         }),
     ],
-}); 
+});

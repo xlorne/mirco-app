@@ -4,15 +4,15 @@ import apple from "@/assets/apple.jpg";
 
 
 interface HeaderProps {
-    title?:string,
+    title?: string,
     onClick?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
-    const [title,setTitle] = React.useState<string>('Header Component');
+    const [title, setTitle] = React.useState<string>('Header Component');
 
     useEffect(() => {
-        if(props.title){
+        if (props.title) {
             setTitle(props.title);
         }
     }, [props.title]);
@@ -28,7 +28,8 @@ const Header: React.FC<HeaderProps> = (props) => {
 
             <Image
                 style={{
-                    margin: 10
+                    margin: 10,
+                    width: 500,
                 }}
                 src={apple}
                 preview={!props.onClick}

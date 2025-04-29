@@ -49,12 +49,14 @@ const HomePage = () => {
         >
             Home Dynamic Remote Component Page
             <Space>
-                <Button onClick={handlerAddLocalPage}>add local page </Button>
                 <Button onClick={handlerGoLocal}>go local page</Button>
+                <Button onClick={handlerAddLocalPage}>add local page </Button>
                 <Button onClick={handlerRemoveLocal}>remove local page</Button>
             </Space>
             <Space>
-                <Button onClick={handlerDynamic}>add remote component</Button>
+                <Button onClick={handlerDynamic}>go remote component</Button>
+            </Space>
+            <Space>
                 <Button onClick={handlerAddDynamicHello}>add remote component to local page</Button>
             </Space>
         </div>

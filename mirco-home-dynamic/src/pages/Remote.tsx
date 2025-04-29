@@ -2,10 +2,11 @@ import React, {Suspense, useState} from 'react';
 import {Button} from "antd";
 import {loadRemoteComponent, loadRemoteScript} from '@/utils/dynamicLoader';
 import {ModalForm, ProForm, ProFormSelect, ProFormText} from "@ant-design/pro-components";
+import {HeaderProps} from "@/gateway";
 
 const RemotePage = () => {
 
-    const [RemoteTestComponent, setRemoteTestComponent] = useState<React.ComponentType | null>(null);
+    const [RemoteHeaderComponent, setRemoteHeaderComponent] = useState<(React.ComponentType<HeaderProps>) | null>(null);
 
     const [visible, setVisible] = useState(false);
 
@@ -14,31 +15,38 @@ const RemotePage = () => {
     const containerRef = React.useRef<HTMLDivElement>(null);
 
     const handlerLoadComponent = async (values: any) => {
-        const {remoteUrl, scope, module,type} = values;
+        const {remoteUrl, scope, module, type} = values;
         loadRemoteScript(remoteUrl).then(() => {
             loadRemoteComponent(scope, module).then((ComponentModule: any) => {
-                console.log('ComponentModule',ComponentModule);
+                console.log('ComponentModule', ComponentModule);
 
-                if(type ==='react'){
+                if (type === 'react') {
                     const Component = ComponentModule.default || ComponentModule;
-                    setRemoteTestComponent(Component);
+                    setRemoteHeaderComponent(()=>Component);
                 }
 
-                if(type ==='vue2'){
+                if (type === 'vue2') {
                     const Component = Object.values(ComponentModule)[0] as any;
-                    Component(containerRef.current,{title:"vue2",onClick:()=>{
-                        alert('vue2 click')
-                    }});
+                    Component(containerRef.current, {
+                        title: "vue2 Header",
+                        onClick: () => {
+                            alert('vue2 click')
+                        }
+                    });
                 }
 
-                if(type ==='vue3'){
+                if (type === 'vue3') {
                     const Component = Object.values(ComponentModule)[0] as any;
-                    Component(containerRef.current,{title:"vue3",onClick:()=>{
-                        alert('vue3 click')
-                    }});
+                    Component(containerRef.current, {
+                        title: "vue3 Header",
+                        onClick: () => {
+                            alert('vue3 click')
+                        }
+                    });
                 }
             });
-        }).catch(ignore => {});
+        }).catch(ignore => {
+        });
         setVisible(false);
     }
 
@@ -53,9 +61,14 @@ const RemotePage = () => {
                 gap: '50px',
             }}
         >
-            {RemoteTestComponent && (
+            {RemoteHeaderComponent && (
                 <Suspense fallback={<div>Loading Header...</div>}>
-                    <RemoteTestComponent/>
+                    <RemoteHeaderComponent
+                        title={"React Header"}
+                        onClick={() => {
+                            alert('react click');
+                        }}
+                    />
                 </Suspense>
             )}
 
@@ -67,7 +80,7 @@ const RemotePage = () => {
                         remoteUrl: "http://localhost:3000/remoteEntry.js",
                         scope: "MircoApp",
                         module: "./Header",
-                        type:'react'
+                        type: 'react'
                     })
                     setVisible(true);
                 }}
@@ -91,18 +104,38 @@ const RemotePage = () => {
                     name={"type"}
                     options={[
                         {
-                            label:'react',
-                            value:'react'
+                            label: 'react',
+                            value: 'react'
                         },
                         {
-                            label:'vue2',
-                            value:'vue2'
+                            label: 'vue2',
+                            value: 'vue2'
                         },
                         {
-                            label:'vue3',
-                            value:'vue3'
+                            label: 'vue3',
+                            value: 'vue3'
                         }
                     ]}
+                    onChange={(value, option) => {
+                        if (value === 'react') {
+                            form.setFieldsValue({
+                                scope: "MircoApp",
+                                remoteUrl: "http://localhost:3000/remoteEntry.js",
+                            })
+                        }
+                        if (value === 'vue2') {
+                            form.setFieldsValue({
+                                scope: "MircoVue2",
+                                remoteUrl: "http://localhost:4000/remoteEntry.js",
+                            })
+                        }
+                        if (value === 'vue3') {
+                            form.setFieldsValue({
+                                scope: "MircoVue3",
+                                remoteUrl: "http://localhost:9000/remoteEntry.js",
+                            })
+                        }
+                    }}
                     rules={[
                         {
                             required: true,

@@ -6,7 +6,7 @@ const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPl
 module.exports = merge(common, {
     mode: 'production',
     devServer: {
-        port: 18000,
+        port: 8000,
     },
     plugins: [
         new ModuleFederationPlugin({
@@ -14,7 +14,7 @@ module.exports = merge(common, {
             // This application named 'HeaderApp'
             // output a js file
             remotes: {
-                "MircoApp": "MircoApp@http://192.168.3.200:13000/remoteEntry.js",
+                "MircoApp": "MircoApp@http://localhost:3000/remoteEntry.js",
             },
             shared: {
                 // some other dependencies

@@ -30,6 +30,7 @@ export default Vue.extend({
 
 <style scoped>
 .header {
+  text-align: center;
   padding: 20px;
 }
 </style>

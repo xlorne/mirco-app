@@ -1,7 +1,10 @@
 import React, {FC, lazy, Suspense} from 'react';
+import {HeaderProps} from "@/gateway";
 
-// @ts-ignore
-const Header: FC<any> = lazy(() => import('MircoApp/Header'));
+const Header: FC<HeaderProps> = lazy(() => {
+    // @ts-ignore
+    return import('MircoApp/Header');
+});
 
 const RemotePage = () => {
     return (
