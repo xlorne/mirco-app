@@ -4,7 +4,7 @@
     <p>This is the about page of our Vue2 Header</p>
   </div>
 </template>
-  
+
 <script lang="ts">
 import Vue from 'vue';
 
@@ -27,9 +27,9 @@ export default Vue.extend({
   }
 });
 </script>
-  
-  <style scoped>
-  .header {
-    padding: 20px;
-  }
-  </style> 
+
+<style scoped>
+.header {
+  padding: 20px;
+}
+</style>

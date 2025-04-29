@@ -3,7 +3,7 @@ import React, {FC, lazy, Suspense} from 'react';
 // @ts-ignore
 const Header: FC<any> = lazy(() => import('MircoApp/Header'));
 
-const Test1 = () => {
+const RemotePage = () => {
     return (
         <div style={{
             display: 'flex',
@@ -24,4 +24,4 @@ const Test1 = () => {
     )
 }
 
-export default Test1;
+export default RemotePage;

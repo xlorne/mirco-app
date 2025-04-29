@@ -1,7 +1,7 @@
 import React, {createContext, lazy, Suspense, useContext, useState} from 'react';
 import {createHashRouter, RouterProvider} from 'react-router-dom';
 import Home from '@/pages/Home';
-import Test from '@/pages/Test';
+import Remote from '@/pages/Remote';
 import NotFount from '@/pages/NotFount';
 import {loadRemoteComponent, loadRemoteScript} from "@/utils/dynamicLoader";
 import {loadPage} from "@/config/PageLoader";
@@ -34,8 +34,8 @@ const RoutesProvider: React.FC = () => {
             element: <Home/>,
         },
         {
-            path: '/test',
-            element: <Test/>,
+            path: '/remote',
+            element: <Remote/>,
         },
         {
             path: '*',

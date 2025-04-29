@@ -3,13 +3,13 @@ import HeaderVue from '../views/Header.vue';
 
 export function Header(el: any, props = {}) {
     const vm = new Vue({
-      render: (h) => h(HeaderVue, { props }),
+        render: (h) => h(HeaderVue, {props}),
     }).$mount(el);
-  
+
     return () => {
-      vm.$destroy();
-      if (el) {
-        el.innerHTML = ''; // 清理 DOM
-      }
+        vm.$destroy();
+        if (el) {
+            el.innerHTML = '';
+        }
     };
-  }
+}

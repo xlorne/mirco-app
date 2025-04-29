@@ -3,35 +3,34 @@ import {useNavigate} from "react-router";
 import {Button, Space} from "antd";
 import {useRoutesContext} from "@/config/routes";
 
-
-const Home = () => {
+const HomePage = () => {
     const navigate = useNavigate();
 
     const {removeRoute, addDynamicComponentRoute, addPageRoute} = useRoutesContext();
 
     const handlerDynamic = () => {
-        navigate('/test');
+        navigate('/remote');
     }
 
-    const handlerGo = () => {
-        navigate('/hello');
+    const handlerGoLocal = () => {
+        navigate('/local');
     }
 
-    const handlerRemoveHello = () => {
-        removeRoute('/hello');
+    const handlerRemoveLocal = () => {
+        removeRoute('/local');
     }
 
-    const handlerAddHello = () => {
+    const handlerAddLocalPage = () => {
         addPageRoute({
-            path: '/hello',
-            pageName: 'hello'
+            path: '/local',
+            pageName: 'Local'
         });
     }
 
     const handlerAddDynamicHello = () => {
         addDynamicComponentRoute({
-            path: "/hello",
-            remoteUrl: "http://192.168.3.200:13000/remoteEntry.js",
+            path: "/local",
+            remoteUrl: "http://localhost:3000/remoteEntry.js",
             scope: "MircoApp",
             module: "./Header"
         });
@@ -48,24 +47,18 @@ const Home = () => {
                 gap: '50px',
             }}
         >
-            Home Page
-            <Button onClick={handlerDynamic}>load remote component</Button>
-
+            Home Dynamic Remote Component Page
             <Space>
-                <Button onClick={handlerAddHello}>dynamic add hello page </Button>
-
-                <Button onClick={handlerAddDynamicHello}>dynamic add remote component to hello page </Button>
+                <Button onClick={handlerAddLocalPage}>add local page </Button>
+                <Button onClick={handlerGoLocal}>go local page</Button>
+                <Button onClick={handlerRemoveLocal}>remove local page</Button>
             </Space>
-
             <Space>
-
-                <Button onClick={handlerGo}>go hello page</Button>
-
-                <Button onClick={handlerRemoveHello}>remove hello page</Button>
+                <Button onClick={handlerDynamic}>add remote component</Button>
+                <Button onClick={handlerAddDynamicHello}>add remote component to local page</Button>
             </Space>
-
         </div>
     )
 }
 
-export default Home;
+export default HomePage;

@@ -5,7 +5,7 @@ import ProFormUploader from "@/components/ProFormUploader";
 import {loadRemoteComponent, loadZipJsFileScript} from "@/utils/dynamicLoader";
 
 
-const Hello = () => {
+const LocalPage = () => {
 
     const [RemoteTestComponent, setRemoteTestComponent] = useState<React.ComponentType<any> | null>(null);
     const [visible, setVisible] = useState(false);
@@ -36,7 +36,7 @@ const Hello = () => {
                 gap: '50px',
             }}
         >
-            Hello Page
+            Local Zip Upload to Component Page
 
             {RemoteTestComponent && (
                 <Suspense fallback={<div>Loading Header...</div>}>
@@ -113,4 +113,4 @@ const Hello = () => {
     )
 }
 
-export default Hello;
+export default LocalPage;

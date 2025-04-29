@@ -3,7 +3,7 @@ import {Button} from "antd";
 import {loadRemoteComponent, loadRemoteScript} from '@/utils/dynamicLoader';
 import {ModalForm, ProForm, ProFormSelect, ProFormText} from "@ant-design/pro-components";
 
-const Test = () => {
+const RemotePage = () => {
 
     const [RemoteTestComponent, setRemoteTestComponent] = useState<React.ComponentType | null>(null);
 
@@ -11,7 +11,7 @@ const Test = () => {
 
     const [form] = ProForm.useForm();
 
-    const contanierRef = React.useRef<HTMLDivElement>(null);
+    const containerRef = React.useRef<HTMLDivElement>(null);
 
     const handlerLoadComponent = async (values: any) => {
         const {remoteUrl, scope, module,type} = values;
@@ -26,7 +26,7 @@ const Test = () => {
 
                 if(type ==='vue2'){
                     const Component = Object.values(ComponentModule)[0] as any;
-                    Component(contanierRef.current,{title:"asd",onClick:()=>{
+                    Component(containerRef.current,{title:"asd",onClick:()=>{
                         alert('xxx')
                     }});
                 }
@@ -52,7 +52,7 @@ const Test = () => {
                 </Suspense>
             )}
 
-            <div ref={contanierRef}></div>
+            <div ref={containerRef}></div>
 
             <Button
                 onClick={() => {
@@ -140,5 +140,5 @@ const Test = () => {
     )
 }
 
-export default Test;
+export default RemotePage;
 

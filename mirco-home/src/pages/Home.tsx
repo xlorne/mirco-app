@@ -5,8 +5,8 @@ import {Button} from "antd";
 const Home = () => {
     const navigate = useNavigate();
 
-    const handlerTest = () => {
-        navigate('/test');
+    const handlerRemote = () => {
+        navigate('/remote');
     }
 
     return (
@@ -20,8 +20,8 @@ const Home = () => {
                 gap: '50px',
             }}
         >
-            Index Page
-            <Button onClick={handlerTest}>go remote component page</Button>
+            Home Static Remote Component Page
+            <Button onClick={handlerRemote}>go remote component page</Button>
         </div>
     )
 }
