@@ -1,0 +1,16 @@
+body {
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+    --primary-color: #f3077c;
+    --body-background-color: #fdfdfd;
+
+    --content-font-size-large: 24px;
+    --content-font-size-middle: 16px;
+    --content-font-size-small: 12px;
+    --content-font-size: var(--content-font-size-middle);
+}

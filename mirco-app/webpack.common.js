@@ -22,8 +22,12 @@ module.exports = {
                 exclude: /node_modules/,
             },
             {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
+                test: /\.(css|s[ac]ss)$/,  // 匹配 .css, .scss, .sass 文件
+                use: [
+                    'style-loader',  // 将 CSS 插入到 DOM 中
+                    'css-loader',    // 解析 CSS
+                    'sass-loader',   // 解析 Sass 文件（对于 .scss 和 .sass 文件）
+                ],
             },
             {
                 test: /\.(png|jpg|gif|svg)$/,

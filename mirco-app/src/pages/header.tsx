@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {Image} from "antd";
 import apple from "@/assets/apple.jpg";
-
+import "./header.scss";
 
 interface HeaderProps {
     title?: string,
@@ -18,7 +18,9 @@ const Header: React.FC<HeaderProps> = (props) => {
     }, [props.title]);
 
     return (
-        <div style={{
+        <div
+        className={"header"}
+            style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
