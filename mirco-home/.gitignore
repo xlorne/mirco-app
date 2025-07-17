@@ -12,6 +12,7 @@
 
 # production
 /dist
+/@mf-types
 
 # misc
 .DS_Store
