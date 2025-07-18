@@ -1,31 +1,26 @@
 import * as path from 'path';
 import {defineConfig} from '@rsbuild/core';
-import {pluginReact} from '@rsbuild/plugin-react';
+import {pluginVue} from '@rsbuild/plugin-vue';
 import {pluginSass} from '@rsbuild/plugin-sass';
 import {pluginModuleFederation} from '@module-federation/rsbuild-plugin';
 
 export default defineConfig({
     plugins: [
-        pluginReact(),
+        pluginVue(),
         pluginSass(),
         pluginModuleFederation({
-            name: "MircoApp",
-            filename: 'remoteEntry.js',
+            name: "MircoVue3",
+            filename: "remoteEntry.js",
             exposes: {
-                "./Header": "./src/pages/header.tsx",
+                "./Header": "./src/bootstrap/Header.ts",
             },
             shared: {
-                react: {
-                    requiredVersion: '^18.3.1',
+                vue: {
                     singleton: true,
-                    strictVersion: false,
+                    eager: true,
+                    requiredVersion: "^3.4.0",
                 },
-                'react-dom': {
-                    requiredVersion: '^18.3.1',
-                    singleton: true,
-                    strictVersion: false,
-                },
-            }
+            },
         }, {
             ssr: false,
             ssrDir: path.resolve(__dirname, 'ssr'),
@@ -33,11 +28,11 @@ export default defineConfig({
         }),
     ],
     server: {
-        port: 3000,
+        port: 9000,
     },
     source: {
         entry: {
-            index: './src/entry.tsx',
+            index: './src/entry.ts',
         },
         decorators: {
             version: 'legacy',
@@ -46,8 +41,6 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'src'),
-            'react': path.resolve(__dirname, 'node_modules/react'),
-            'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
         }
     },
     html: {

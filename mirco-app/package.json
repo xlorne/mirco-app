@@ -17,7 +17,6 @@
   "scripts": {
     "dev": "rsbuild start --config rsbuild.config.dev.ts",
     "start": "rsbuild start",
-    "mock": "rsbuild start --config rsbuild.config.mock.ts",
     "build": "rsbuild build"
   },
   "eslintConfig": {
