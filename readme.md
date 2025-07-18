@@ -1,6 +1,6 @@
 ## 微前端测试项目
 
-本项目是一个用于验证 React 主应用通过 Webpack 5 Module Federation 动态加载微前端子应用的实验项目。
+本项目是一个用于验证 React 主应用通过 RsBuild Module Federation 动态加载微前端子应用的实验项目。
 
 ### ✅ 支持特性
 * 主应用：React + Ant Design + ProForm
