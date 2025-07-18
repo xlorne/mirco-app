@@ -17,7 +17,7 @@
   "scripts": {
     "dev": "rsbuild start --config rsbuild.config.dev.ts",
     "start": "rsbuild start",
-    "build": "rsbuild build"
+    "build": "rsbuild build --config rsbuild.config.prod.ts"
   },
   "eslintConfig": {
     "extends": [

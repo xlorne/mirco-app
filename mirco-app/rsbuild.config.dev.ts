@@ -11,6 +11,19 @@ export default defineConfig({
             '/user': 'http://127.0.0.1:8090',
         },
     },
-
+    tools: {
+        rspack(config) {
+            config.module.rules.push({
+                test: /\.(png|jpe?g|gif|svg|webp)$/i,
+                type: 'asset',
+                parser: {
+                    dataUrlCondition: {
+                        maxSize: 100 * 1024, // 小于 100kb 的图片转成 base64
+                    },
+                },
+            });
+            return config;
+        },
+    }
 })
 

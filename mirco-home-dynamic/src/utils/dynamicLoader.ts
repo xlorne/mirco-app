@@ -78,7 +78,9 @@ export const loadZipJsFileScript = async (base64: string): Promise<void> => {
             const content = file.arrayBuffer();
             zip.loadAsync(content).then((unzipped) => {
                 const jsFiles: { relativePath: string, content: string }[] = [];
+                const cssFiles: { relativePath: string, content: string }[] = [];
 
+                const blobUrlMap = new Map<string, string>();
                 const filePromises: Promise<void>[] = [];
                 unzipped.forEach((relativePath, file) => {
                     if (relativePath.endsWith(".js")) {
@@ -87,9 +89,38 @@ export const loadZipJsFileScript = async (base64: string): Promise<void> => {
                         });
                         filePromises.push(filePromise);
                     }
+
+                    // CSS 文件
+                    if (relativePath.endsWith('.css')) {
+                        const p = file.async('text').then((text) => {
+                            cssFiles.push({ relativePath, content: text });
+                        });
+                        filePromises.push(p);
+                    }
+
                 });
 
                 Promise.all(filePromises).then(() => {
+
+                    // 插入 CSS
+                    cssFiles.forEach(({ relativePath, content }) => {
+                        let patchedCss = content;
+
+                        // 替换 CSS 中的图片路径为 blob URL
+                        // @ts-ignore
+                        for (const [originalPath, blobUrl] of blobUrlMap.entries()) {
+                            const safePath = originalPath.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'); // escape regex
+                            const regex = new RegExp(safePath, 'g');
+                            patchedCss = patchedCss.replace(regex, blobUrl);
+                        }
+
+                        const styleEl = document.createElement('style');
+                        styleEl.innerHTML = patchedCss;
+                        document.head.appendChild(styleEl);
+                        console.log('Load success style:', relativePath);
+                    });
+
+
                     jsFiles.reduce((prevPromise: any, jsFile) => {
                         return prevPromise.then(() => {
                             return loadFileScript(jsFile.content).then(() => {

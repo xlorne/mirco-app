@@ -25,7 +25,7 @@ export default defineConfig({
                     singleton: true,
                     strictVersion: false,
                 },
-            }
+            },
         }, {
             ssr: false,
             ssrDir: path.resolve(__dirname, 'ssr'),
@@ -58,20 +58,6 @@ export default defineConfig({
             strategy: 'split-by-size',
             minSize: 10000,
             maxSize: 30000,
-        },
-    },
-    tools: {
-        rspack(config) {
-            config.module.rules.push({
-                test: /\.(png|jpe?g|gif|svg|webp)$/i,
-                type: 'asset',
-                parser: {
-                    dataUrlCondition: {
-                        maxSize: 100 * 1024, // 小于 100kb 的图片转成 base64
-                    },
-                },
-            });
-            return config;
         },
     }
 });
