@@ -45,7 +45,9 @@ export const loadFileScript = (content: string): Promise<void> => {
     return new Promise((resolve, reject) => {
         try {
             try {
-                eval(content);
+                // eval(content);
+                const callback = new Function(content);
+                callback();
             } catch (e) {
                 resolve();
                 return;
